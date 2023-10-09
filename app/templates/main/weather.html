@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block page_content %}
+<div class="page-header">
+</div>
+{% include 'messages.html' %}
+
+<div class="col-md-4">
+    <form action="" method="post">
+        {{ form.csrf_token }}
+        {{ wtf.form_field(form.city) }}
+        {{ wtf.form_field(form.submit) }}
+    </form>
+    <h2>{{ weather_condition }}</h2>
+</div>
+
+{% endblock page_content %}

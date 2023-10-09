@@ -1,6 +1,5 @@
-import re
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, HiddenField, BooleanField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, Regexp
 from wtforms import ValidationError
 
@@ -45,6 +44,11 @@ class RegisterForm(FlaskForm):
             Length(3, 200)
         ]
     )
+    # city = StringField('City', validators=[
+    #         DataRequired(),
+    #         Length(2, 50)
+    #     ]
+    # )
     password = PasswordField(
         'Password',
         validators=[

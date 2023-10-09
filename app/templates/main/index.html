@@ -16,6 +16,7 @@
 <h3>{{ message }}</h3>
 <form action="" method="post">
   {{ form.csrf_token }}
+  {{ wtf.form_field(form.number) }}
   {{ wtf.form_field(form.submit) }}
 </form>
 

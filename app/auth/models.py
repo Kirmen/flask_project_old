@@ -20,6 +20,7 @@ class User(BaseModel, UserMixin):
     email = CharField(max_length=200, unique=True, index=True)
     _password_hash = CharField(max_length=128)
     last_visit = DateTimeField(default=datetime.datetime.now)
+    # city = CharField(max_length=100, index=True, null=True)
     role = ForeignKeyField(Role, backref='users')
     profile = ForeignKeyField(Profile)
 

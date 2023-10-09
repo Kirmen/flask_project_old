@@ -1,21 +1,46 @@
 from flask import render_template, flash, redirect, url_for, request, abort
 from flask_login import current_user, login_required
+from faker import Faker
 
-from app import User, Profile
+from app import User, Profile, Role
+from app.auth.utils import get_gravatar
 from app.main import main
-from app.main.forms import GenerateDataForm, EditUserForm
+from app.main.forms import GenerateDataForm, EditUserForm, CityWeather
+from app.main.utils import get_weather
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
     form = GenerateDataForm()
-    if form.validate_on_submit():
-        flash('Database filled with test data')
+    fake = Faker()
+    number = form.number.data
+
+    if number:
+        for num in range(number):
+            user_role = Role.select().where(Role.name == 'user').first()
+            user_profile = Profile(
+                avatar=get_gravatar(fake.email()),
+                info=fake.name()
+            )
+            user_profile.save()
+            user_role.save()
+
+            user = User(
+                username=fake.unique.first_name(),
+                email=fake.email(),
+                password='@dmiN1234',
+                role=user_role,
+                profile=user_profile
+            )
+            user.save()
+            flash('fake-users has added')
+            # if form.validate_on_submit():
+            #     flash('Database filled with test data')
     return render_template(
         'main/index.html',
         title='Home page',
-        form=form
-    )
+        form=form)
+
 
 
 @main.route('/show/users')
@@ -94,3 +119,22 @@ def delete_users():
         profile.delete_instance()
     flash(message)
     return redirect(url_for('.show_users'))
+
+@main.route('/weather', methods=['GET', 'POST'])
+def weather():
+    form=CityWeather()
+    # flash('You have been logged out.')
+    weather_condition = ''
+    if form.city.data:
+        WEATHER_API_KEY = 'cfd36353845324a3d7fee472955de516'
+        OPENWEATHER_API_URL = 'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={appId}&units=metric'
+
+        weather_condition = get_weather(OPENWEATHER_API_URL,WEATHER_API_KEY, form.city.data)
+
+
+    return render_template(
+        'main/weather.html',
+        title='Weather',
+        form=form,
+        weather_condition=weather_condition
+    )

@@ -58,6 +58,7 @@ def register():
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
+            # city=form.city.data,
             role=user_role,
             profile=user_profile
         )
