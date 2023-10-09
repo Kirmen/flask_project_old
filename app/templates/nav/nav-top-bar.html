@@ -16,6 +16,34 @@
                     <a href="/">Home</a>
                 </li>
             </ul>
+
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                      Users <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                      <li><a href="{{ url_for('main.show_users') }}">Show users</a></li>
+                      <li role="separator" class="divider"></li>
+                  </ul>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                <li>
+                    <a href="#">
+                        <img src="{{ current_user.profile.avatar }}" alt="avatar" width="20" height="20">
+                        {{ current_user.username }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ url_for('auth.logout') }}">Logout</a>
+                </li>
+                {% else %}
+                    <li><a href="{{ url_for('auth.register') }}">Register</a></li>
+                    <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+                {% endif %}
+            </ul>
         </div>
     </div>
 </div>

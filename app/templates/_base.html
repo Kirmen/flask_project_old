@@ -4,6 +4,7 @@
 {{ super() }}
     <link rel="icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 {% endblock head %}
 
 
@@ -28,4 +29,5 @@
 {{ super() }}
     {{ moment.include_moment() }}
     <script src="{{ url_for('static', filename='js/get_year.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/select.js') }}"></script>
 {% endblock scripts %}

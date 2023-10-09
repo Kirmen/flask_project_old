@@ -15,3 +15,11 @@ def page_not_found(error):
         title='Error 404',
         error=error
     ), 404
+
+
+def forbidden(error):
+    return render_template(
+        'error.html',
+        title='Error 403',
+        error=error
+    ), 403

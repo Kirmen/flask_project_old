@@ -1,17 +1,22 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms import SubmitField, HiddenField, StringField
+from wtforms.validators import DataRequired, Length, Regexp, Email
 
 
-class UserForm(FlaskForm):
+class GenerateDataForm(FlaskForm):
+    submit = SubmitField('Generate')
+
+
+class EditUserForm(FlaskForm):
+    id = HiddenField()
     username = StringField(
-        'Username',
+        'Edit username',
         validators=[
             DataRequired(),
-            Length(3, 100)
+            Length(3, 100),
+            Regexp('^[A-Za-z][A-Za-z0-9_.]*$', 0, 'Username must contains only letters, underscores or digits')
         ],
-        render_kw={
-            'placeholder': 'Enter your name'}
+        render_kw={'placeholder': 'Enter your name'}
     )
     email = StringField(
         'Email',
@@ -21,20 +26,4 @@ class UserForm(FlaskForm):
             Email()
         ]
     )
-    password = PasswordField(
-        'Password',
-        validators=[
-            DataRequired(),
-            EqualTo('password_repeat', message='Password must match')
-        ]
-    )
-    password_repeat = PasswordField(
-        'Confirm password',
-        validators=[DataRequired()]
-    )
-    submit = SubmitField(
-        'Add user',
-        render_kw={
-            'class': 'btn btn-primary'
-        }
-    )
+    submit = SubmitField('Edit')

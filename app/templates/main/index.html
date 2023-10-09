@@ -3,18 +3,20 @@
 
 {% block page_content %}
 <div class="page-header">
-  <h1>Hello, {{ name }}</h1>
+  <h1>Hello,
+    {% if current_user.is_authenticated %}
+    {{ current_user.username }}
+    {% else %}
+    Anonymous
+    {% endif %}
+  </h1>
 </div>
+<h3>Generate test data</h3>
 {% include 'messages.html' %}
-<div class="col-md-4">
-  <form action="{{ url_for('main.add_user') }}" method="post">
-    {{ form.csrf_token }}
-    {{ wtf.form_field(form.username) }}
-    {{ wtf.form_field(form.email) }}
-    {{ wtf.form_field(form.password) }}
-    {{ wtf.form_field(form.password_repeat) }}
-    {{ form.submit }}
-  </form>
-</div>
+<h3>{{ message }}</h3>
+<form action="" method="post">
+  {{ form.csrf_token }}
+  {{ wtf.form_field(form.submit) }}
+</form>
 
 {% endblock page_content %}
