@@ -14,9 +14,9 @@
 <h3>Generate test data</h3>
 {% include 'messages.html' %}
 <h3>{{ message }}</h3>
-<form action="" method="post">
+<form action="" method="post" class="col-md-1">
   {{ form.csrf_token }}
-  {{ wtf.form_field(form.number) }}
+  {{ wtf.form_field(form.qty) }}
   {{ wtf.form_field(form.submit) }}
 </form>
 

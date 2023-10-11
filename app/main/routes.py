@@ -1,57 +1,42 @@
 from flask import render_template, flash, redirect, url_for, request, abort
 from flask_login import current_user, login_required
-from faker import Faker
+from flask_paginate import get_parameter, Pagination
 
-from app import User, Profile, Role
-from app.auth.utils import get_gravatar
+from app import User, Profile
 from app.main import main
-from app.main.forms import GenerateDataForm, EditUserForm, CityWeather
-from app.main.utils import get_weather
+from app.main.forms import GenerateDataForm, EditUserForm
+from utils.fake_users.db_manager import main as write_fake_profiles
 
 
 @main.route('/', methods=['GET', 'POST'])
 def index():
     form = GenerateDataForm()
-    fake = Faker()
-    number = form.number.data
-
-    if number:
-        for num in range(number):
-            user_role = Role.select().where(Role.name == 'user').first()
-            user_profile = Profile(
-                avatar=get_gravatar(fake.email()),
-                info=fake.name()
-            )
-            user_profile.save()
-            user_role.save()
-
-            user = User(
-                username=fake.unique.first_name(),
-                email=fake.email(),
-                password='@dmiN1234',
-                role=user_role,
-                profile=user_profile
-            )
-            user.save()
-            flash('fake-users has added')
-            # if form.validate_on_submit():
-            #     flash('Database filled with test data')
+    if form.validate_on_submit():
+        qty = int(form.qty.data)
+        write_fake_profiles(qty)
+        flash('Database filled with test data')
     return render_template(
         'main/index.html',
         title='Home page',
-        form=form)
-
+        form=form
+    )
 
 
 @main.route('/show/users')
 @login_required
 def show_users():
     """Show users information"""
-    users = User.select()
+    per_page = 10
+    page = request.args.get(get_parameter(), type=int, default=1)
+    total = User.select().count()
+    pagination = Pagination(page=page, per_page=per_page, total=total, record_name='users')
+
+    users = User.select().paginate(page, per_page)
     return render_template(
         'main/show_users.html',
         title='Show users',
-        users=users)
+        users=users,
+        pagination=pagination)
 
 
 @main.route('/edit/user/<int:user_id>', methods=['GET'])
@@ -119,22 +104,3 @@ def delete_users():
         profile.delete_instance()
     flash(message)
     return redirect(url_for('.show_users'))
-
-@main.route('/weather', methods=['GET', 'POST'])
-def weather():
-    form=CityWeather()
-    # flash('You have been logged out.')
-    weather_condition = ''
-    if form.city.data:
-        WEATHER_API_KEY = 'cfd36353845324a3d7fee472955de516'
-        OPENWEATHER_API_URL = 'http://api.openweathermap.org/data/2.5/weather?q={city}&appid={appId}&units=metric'
-
-        weather_condition = get_weather(OPENWEATHER_API_URL,WEATHER_API_KEY, form.city.data)
-
-
-    return render_template(
-        'main/weather.html',
-        title='Weather',
-        form=form,
-        weather_condition=weather_condition
-    )

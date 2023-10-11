@@ -1,0 +1,41 @@
+{% extends '_base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}
+  {{ title }}
+{% endblock title %}
+
+{% block page_content %}
+<div class="page-header">
+  <h1>Show weather info about city</h1>
+  {% include 'messages.html' %}
+</div>
+
+<div class="col-md-4">
+  <form action="" method="post">
+    {{ form.csrf_token }}
+    {{ wtf.form_field(form.city_name) }}
+    {{ wtf.form_field(form.submit) }}
+  </form>
+</div>
+
+{% if form.city_name.data %}
+<div class="card mb-3" style="max-width: 540px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <img src="{{ city_weather['icon_url'] }}" class="img-fluid rounded-start" alt="...">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">Weather in {{form.city_name.data }}</h5>
+        <p class="card-text">Temperature: {{ city_weather['temperature'] }} C</p>
+        <p class="card-text">Wind speed: {{ city_weather['wind_speed'] }} km/h </p>
+        <p class="card-text">Sky: {{ city_weather['sky'] }}</p>
+        <p class="card-text"><small class="text-body-secondary">update at ---</small></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif%}
+
+{% endblock page_content %}
