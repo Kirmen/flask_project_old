@@ -1,6 +1,6 @@
 from faker import Faker
 from faker.providers import BaseProvider
-# from password_generator import PasswordGenerator
+from password_generator import PasswordGenerator
 from random import choice
 from typing import NamedTuple, List
 
@@ -24,10 +24,10 @@ class RoleProvider(BaseProvider):
 
 
 def generate_password(min_len: int = 10, max_len: int = 15):
-    # generator = PasswordGenerator()
-    # generator.minlen = min_len
-    # generator.maxlen = max_len
-    return 'As@123456789'
+    generator = PasswordGenerator()
+    generator.minlen = min_len
+    generator.maxlen = max_len
+    return generator.generate()
 
 
 def generate_profiles(qty: int) -> List[ProfileDTO]:

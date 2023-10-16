@@ -17,25 +17,25 @@
     {{ wtf.form_field(form.city_name) }}
     {{ wtf.form_field(form.submit) }}
   </form>
-</div>
 
-{% if form.city_name.data %}
-<div class="card mb-3" style="max-width: 540px;">
-  <div class="row g-0">
-    <div class="col-md-4">
-      <img src="{{ city_weather['icon_url'] }}" class="img-fluid rounded-start" alt="...">
-    </div>
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title">Weather in {{form.city_name.data }}</h5>
-        <p class="card-text">Temperature: {{ city_weather['temperature'] }} C</p>
-        <p class="card-text">Wind speed: {{ city_weather['wind_speed'] }} km/h </p>
-        <p class="card-text">Sky: {{ city_weather['sky'] }}</p>
-        <p class="card-text"><small class="text-body-secondary">update at ---</small></p>
-      </div>
-    </div>
+  {% if city_weather %}
+  <div class="table-responsive">
+    <h3>Weather info about city {{ city_name.capitalize() }}, {{ country.name }}</h3>
+    {% include 'weather/_weather_table.html' %}
+    <form action="{{ url_for('weather.add_city') }}" method="post">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <input type="hidden" name="city" value="{{ city_name }}">
+      <input type="hidden" name="country" value="{{ country }}">
+      <button type="submit" class="btn btn-primary" id="submit-add">Add city</button>
+    </form>
   </div>
+  {% endif %}
 </div>
-{% endif%}
-
+  <div class="col-md-5">
+     <div class="gmap_canvas">
+       <iframe width="400" height="300" id="gmap_canvas"
+               src="https://maps.google.com/maps?q={{ city_name }}&t=&z=9&ie=UTF8&iwloc=&output=embed">
+       </iframe>
+     </div>
+   </div>
 {% endblock page_content %}

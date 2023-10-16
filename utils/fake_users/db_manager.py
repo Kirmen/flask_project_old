@@ -1,5 +1,5 @@
 import json
-from typing import List
+from typing import List, Dict
 
 from definitions import PATH_TO_CREDENTIALS
 from app.auth.models import User, Role, Profile
@@ -38,7 +38,7 @@ def prepare_user_credentials(users: List[ProfileDTO]):
     return users_prepared_to_json
 
 
-def write_user_credentials_to_json(users: List, json_file: str): #List[dict[str, str]]
+def write_user_credentials_to_json(users: List[Dict[str, str]], json_file: str):
     with open(json_file, 'w') as file:
         json.dump(users, file, indent=4)
 
