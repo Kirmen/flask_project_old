@@ -47,9 +47,13 @@ def create_app(config_name='default'):
     from app.main import main
     from app.auth import auth
     from app.weather import weather
+    from app.api import api
+
+    csrf.exempt(api)
 
     app.register_blueprint(main)
     app.register_blueprint(auth)
     app.register_blueprint(weather)
+    app.register_blueprint(api)
 
     return app

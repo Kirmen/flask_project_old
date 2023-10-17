@@ -1,5 +1,5 @@
 import requests
-from typing import NamedTuple, List
+from typing import NamedTuple
 
 from app.weather.models import Country
 
@@ -24,7 +24,7 @@ def get_countries(url: str):
     return countries_data
 
 
-def parse_countries(countries_raw: List[dict]):
+def parse_countries(countries_raw: list[dict]):
     countries_parsed = []
     for country in countries_raw:
         country_dto = CountryDTO(
@@ -36,7 +36,7 @@ def parse_countries(countries_raw: List[dict]):
     return countries_parsed
 
 
-def write_countries_to_db(countries: List[CountryDTO]):
+def write_countries_to_db(countries: list[CountryDTO]):
     for country in countries:
         country_entity = Country(code=country.code,
                                  name=country.name,

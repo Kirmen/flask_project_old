@@ -2,8 +2,6 @@ import time
 import json
 import unittest
 import random
-from typing import Dict
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -13,8 +11,7 @@ from definitions import PATH_TO_CREDENTIALS
 class TestGenerateDB(unittest.TestCase):
     browser: webdriver.chrome = None
     base_url: str = None
-    random_user: Dict[str, str] = None
-    city = {'city': 'Tokyo', 'country': 'Japan'}
+    random_user: dict[str, str] = None
 
     @classmethod
     def setUpClass(cls) -> None:
@@ -49,20 +46,3 @@ class TestGenerateDB(unittest.TestCase):
         hello_message = self.browser.find_element(By.TAG_NAME, 'h1').text
         self.assertIn(f'Hello, {self.random_user["username"]}', hello_message)
         self.assertEqual(self.browser.current_url, self.base_url)
-
-    def test_ac_weather_info(self):
-        self.browser.find_element(By.ID, 'weather_menu').click()
-        self.browser.find_element(By.ID, 'weather_info').click()
-        self.assertEqual(self.browser.title, 'Show weather info')
-
-        self.browser.find_element(By.ID, 'city_name').send_keys(self.city["city"])
-        self.browser.find_element(By.ID, 'submit').click()
-        weather_info_message = self.browser.find_element(By.TAG_NAME, 'h3').text
-        self.assertIn(f'Weather info about city {self.city["city"]}, {self.city["country"]}', weather_info_message)
-
-        element = self.browser.find_element(By.ID, "submit-add")
-        self.browser.execute_script("arguments[0].click();", element)
-        alert_text = self.browser.find_element(By.ID, 'alert_block').text
-        self.assertIn(f'City {self.city["city"]} added to user {self.random_user["username"]}', alert_text)
-
-

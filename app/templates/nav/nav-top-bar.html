@@ -29,11 +29,11 @@
             </ul>
 
             <ul class="nav navbar-nav">
-                <li class="dropdown" id="weather_menu">
+                <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                       Weather <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                      <li><a href="{{ url_for('weather.index') }}" id="weather_info">Weather info</a></li>
+                      <li><a href="{{ url_for('weather.index') }}">Weather info</a></li>
                       <li role="separator" class="divider"></li>
                       <li><a href="{{ url_for('weather.show_city') }}">Weather monitor</a></li>
                   </ul>

@@ -12,6 +12,7 @@ exceptiongroup==1.1.0
 Faker==17.0.0
 Flask==2.2.2
 Flask-Bootstrap==3.3.7.1
+Flask-HTTPAuth==4.7.0
 Flask-Login==0.6.2
 Flask-Moment==1.0.5
 flask-paginate==2022.1.8
@@ -29,6 +30,7 @@ packaging==23.0
 passwordgenerator==1.5.1
 peewee==3.15.4
 pycparser==2.21
+PyJWT==2.6.0
 PySocks==1.7.1
 python-dateutil==2.8.2
 python-dotenv==0.21.1

@@ -1,5 +1,4 @@
 import json
-from typing import List, Dict
 
 from definitions import PATH_TO_CREDENTIALS
 from app.auth.models import User, Role, Profile
@@ -11,7 +10,7 @@ def clear_db():
     Profile.delete().execute()
 
 
-def write_to_db(profiles: List[ProfileDTO]):
+def write_to_db(profiles: list[ProfileDTO]):
     for profile in profiles:
         role = Role.get(Role.name == profile.role)
         profile_entity = Profile(avatar=profile.avatar,
@@ -25,7 +24,7 @@ def write_to_db(profiles: List[ProfileDTO]):
         user.save()
 
 
-def prepare_user_credentials(users: List[ProfileDTO]):
+def prepare_user_credentials(users: list[ProfileDTO]):
     users_prepared_to_json = []
     for user in users:
         temp = {
@@ -38,7 +37,7 @@ def prepare_user_credentials(users: List[ProfileDTO]):
     return users_prepared_to_json
 
 
-def write_user_credentials_to_json(users: List[Dict[str, str]], json_file: str):
+def write_user_credentials_to_json(users: list[dict[str, str]], json_file: str):
     with open(json_file, 'w') as file:
         json.dump(users, file, indent=4)
 

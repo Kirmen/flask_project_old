@@ -2,7 +2,7 @@ from faker import Faker
 from faker.providers import BaseProvider
 from password_generator import PasswordGenerator
 from random import choice
-from typing import NamedTuple, List
+from typing import NamedTuple
 
 from app.auth.utils import get_gravatar
 
@@ -30,7 +30,7 @@ def generate_password(min_len: int = 10, max_len: int = 15):
     return generator.generate()
 
 
-def generate_profiles(qty: int) -> List[ProfileDTO]:
+def generate_profiles(qty: int) -> list[ProfileDTO]:
     profiles = []
 
     for _ in range(qty):

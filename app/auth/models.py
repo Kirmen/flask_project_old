@@ -2,6 +2,9 @@ from peewee import CharField, DateTimeField, TextField, ForeignKeyField
 from werkzeug.security import generate_password_hash, check_password_hash
 import datetime
 from flask_login import UserMixin
+from flask import current_app
+import jwt
+from jwt.exceptions import ExpiredSignatureError, DecodeError
 
 from app.base_model import BaseModel
 
@@ -38,3 +41,27 @@ class User(BaseModel, UserMixin):
         if self.role.name == 'admin':
             return True
         return False
+
+    def generate_auth_token(self, expiration=3600):
+        token = jwt.encode(
+            {
+                'id': self.id,
+                'exp': datetime.datetime.now().timestamp() + datetime.timedelta(seconds=expiration).seconds
+            },
+            current_app.config['SECRET_KEY'],
+            algorithm='HS256')
+        return token
+
+    @staticmethod
+    def verify_auth_token(token):
+        try:
+            token_data = jwt.decode(
+                token,
+                current_app.config['SECRET_KEY'],
+                algorithms=['HS256']
+            )
+        except (ExpiredSignatureError, DecodeError):
+            return None
+        return User.select().where(User.id == int(token_data['id'])).first()
+
+
